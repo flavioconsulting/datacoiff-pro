@@ -260,21 +260,23 @@
     <div class="section-label">Démo gratuite</div>
     <h2 class="section-title" style="margin:0 auto;text-align:center;">Voyez DataCoiff Pro<br>en action.</h2>
     <div class="demo-form">
-      <div class="form-group"><label>Votre prénom</label><input type="text" placeholder="Marie"></div>
-      <div class="form-group"><label>Votre email</label><input type="email" placeholder="marie@monsalon.fr"></div>
-      <div class="form-group"><label>Nom de votre salon</label><input type="text" placeholder="Salon Marie"></div>
-      <div class="form-group">
-        <label>Nombre d'employés</label>
-        <select>
-          <option>1 (juste moi)</option>
-          <option>2-3 employés</option>
-          <option>4-6 employés</option>
-          <option>7+ employés</option>
-        </select>
-      </div>
-      <br>
-      <a href="mailto:flavio.dunand71@gmail.com?subject=Demande demo DataCoiff Pro" class="btn-cta">Envoyer ma demande de démo →</a>
-      <p style="color:var(--gris);font-size:0.8rem;margin-top:16px;">Je vous réponds sous 24h pour fixer un créneau. 100% gratuit, sans engagement.</p>
+      <form action="https://formspree.io/f/xkoqjqgo" method="POST">
+        <div class="form-group"><label>Votre prénom</label><input type="text" name="prenom" placeholder="Marie" required></div>
+        <div class="form-group"><label>Votre email</label><input type="email" name="email" placeholder="marie@monsalon.fr" required></div>
+        <div class="form-group"><label>Nom de votre salon</label><input type="text" name="salon" placeholder="Salon Marie" required></div>
+        <div class="form-group">
+          <label>Nombre d'employés</label>
+          <select name="employes">
+            <option>1 (juste moi)</option>
+            <option>2-3 employés</option>
+            <option>4-6 employés</option>
+            <option>7+ employés</option>
+          </select>
+        </div>
+        <br>
+        <button type="submit" class="btn-cta">Envoyer ma demande de démo →</button>
+        <p style="color:var(--gris);font-size:0.8rem;margin-top:16px;">Je vous réponds sous 24h pour fixer un créneau. 100% gratuit, sans engagement.</p>
+      </form>
     </div>
   </section>
 
