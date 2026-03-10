@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DataCoiff Pro — Le dashboard intelligent pour votre salon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --noir:     #0a0a0f;
+      --noir2:    #111118;
+      --violet:   #7c3aed;
+      --violet2:  #a855f7;
+      --or:       #f4b942;
+      --blanc:    #f8f4ef;
+      --gris:     #6b6b80;
+      --card:     #16161f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--noir);
+      color: var(--blanc);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 20px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--blanc); letter-spacing: -0.5px; }
+    .logo span { color: var(--or); }
+    nav a { color: var(--gris); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    nav a:hover { color: var(--blanc); }
+    .nav-links { display: flex; gap: 40px; align-items: center; }
+    .btn-nav { background: var(--violet); color: var(--blanc) !important; padding: 10px 24px; border-radius: 100px; font-weight: 500 !important; transition: all 0.2s !important; }
+    .btn-nav:hover { background: var(--violet2) !important; transform: translateY(-1px); }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 20px 80px; position: relative; }
+    .hero-glow { position: absolute; width: 600px; height: 600px; background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3); color: var(--violet2); padding: 8px 18px; border-radius: 100px; font-size: 0.85rem; font-weight: 500; margin-bottom: 30px; animation: fadeUp 0.6s ease both; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; line-height: 1.05; letter-spacing: -2px; margin-bottom: 25px; animation: fadeUp 0.6s 0.1s ease both; }
+    .hero h1 em { font-style: italic; color: var(--or); }
+    .hero p { font-size: 1.2rem; color: var(--gris); max-width: 520px; margin: 0 auto 40px; line-height: 1.7; font-weight: 300; animation: fadeUp 0.6s 0.2s ease both; }
+    .hero-cta { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; animation: fadeUp 0.6s 0.3s ease both; }
+    .btn-primary { background: linear-gradient(135deg, var(--violet), var(--violet2)); color: var(--blanc); padding: 16px 36px; border-radius: 100px; font-size: 1rem; font-weight: 500; text-decoration: none; transition: all 0.3s; box-shadow: 0 8px 30px rgba(124,58,237,0.4); }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px rgba(124,58,237,0.5); }
+    .btn-secondary { background: transparent; color: var(--blanc); padding: 16px 36px; border-radius: 100px; font-size: 1rem; font-weight: 500; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); transition: all 0.3s; }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
+
+    /* PREVIEW */
+    .preview { max-width: 900px; margin: 60px auto 0; animation: fadeUp 0.8s 0.4s ease both; }
+    .preview-window { background: var(--card); border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); overflow: hidden; box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05); }
+    .preview-bar { background: #1e1e2e; padding: 14px 20px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #28ca41; }
+    .preview-url { flex: 1; text-align: center; color: var(--gris); font-size: 0.8rem; }
+    .preview-body { padding: 30px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    .kpi-card { border-radius: 12px; padding: 20px; }
+    .kpi-card.green  { background: linear-gradient(135deg, #00c896, #00a878); }
+    .kpi-card.blue   { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+    .kpi-card.purple { background: linear-gradient(135deg, #7c3aed, #5b21b6); }
+    .kpi-value { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: white; }
+    .kpi-label { font-size: 0.8rem; color: rgba(255,255,255,0.75); margin-top: 4px; }
+    .chart-area { grid-column: 1 / 3; background: #1e1e2e; border-radius: 12px; padding: 20px; height: 120px; display: flex; align-items: flex-end; gap: 8px; }
+    .bar { flex: 1; border-radius: 4px 4px 0 0; background: linear-gradient(180deg, var(--violet2), var(--violet)); opacity: 0.8; animation: growUp 1s ease both; }
+    @keyframes growUp { from { transform: scaleY(0); transform-origin: bottom; } to { transform: scaleY(1); transform-origin: bottom; } }
+    .chart-side { background: #1e1e2e; border-radius: 12px; padding: 20px; }
+    .chart-side-title { font-size: 0.8rem; color: var(--gris); margin-bottom: 12px; font-weight: 500; }
+    .service-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .service-bar { height: 8px; border-radius: 4px; background: linear-gradient(90deg, var(--violet), var(--violet2)); }
+    .service-label { font-size: 0.75rem; color: var(--gris); white-space: nowrap; }
+
+    /* STATS */
+    .stats { padding: 80px 60px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; max-width: 900px; margin: 0 auto; }
+    .stat-item { text-align: center; padding: 40px 20px; }
+    .stat-number { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; color: var(--blanc); }
+    .stat-number span { color: var(--or); }
+    .stat-desc { color: var(--gris); font-size: 0.9rem; margin-top: 8px; }
+
+    /* FEATURES */
+    .features { padding: 80px 60px; max-width: 1100px; margin: 0 auto; }
+    .section-label { color: var(--violet2); font-size: 0.85rem; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; line-height: 1.2; margin-bottom: 60px; max-width: 500px; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .feature-card { background: var(--card); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 30px; transition: all 0.3s; }
+    .feature-card:hover { border-color: rgba(124,58,237,0.3); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    .feature-icon { font-size: 2rem; margin-bottom: 16px; display: block; }
+    .feature-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; color: var(--blanc); }
+    .feature-desc { color: var(--gris); font-size: 0.9rem; line-height: 1.6; }
+
+    /* PRICING */
+    .pricing { padding: 80px 60px; max-width: 600px; margin: 0 auto; text-align: center; }
+    .price-card { background: var(--card); border: 1px solid rgba(124,58,237,0.3); border-radius: 24px; padding: 50px 40px; position: relative; overflow: hidden; margin-top: 40px; }
+    .price-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--violet), var(--violet2), var(--or)); }
+    .price-badge { display: inline-block; background: rgba(244,185,66,0.15); color: var(--or); border: 1px solid rgba(244,185,66,0.3); padding: 6px 16px; border-radius: 100px; font-size: 0.8rem; font-weight: 500; margin-bottom: 20px; }
+    .price-amount { font-family: 'Playfair Display', serif; font-size: 4.5rem; font-weight: 900; color: var(--blanc); line-height: 1; }
+    .price-amount sup { font-size: 1.5rem; vertical-align: super; color: var(--gris); }
+    .price-amount sub { font-size: 1rem; color: var(--gris); font-family: 'DM Sans', sans-serif; font-weight: 300; }
+    .price-desc { color: var(--gris); font-size: 0.95rem; margin: 15px 0 35px; }
+    .price-features { list-style: none; text-align: left; margin-bottom: 40px; }
+    .price-features li { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 12px; color: var(--blanc); font-size: 0.95rem; }
+    .price-features li::before { content: '✓'; color: var(--violet2); font-weight: 700; flex-shrink: 0; }
+    .btn-cta { display: block; width: 100%; background: linear-gradient(135deg, var(--violet), var(--violet2)); color: var(--blanc); padding: 18px; border-radius: 12px; font-size: 1rem; font-weight: 500; text-decoration: none; text-align: center; transition: all 0.3s; box-shadow: 0 8px 30px rgba(124,58,237,0.4); }
+    .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(124,58,237,0.5); }
+
+    /* DEMO */
+    .demo { padding: 80px 60px; max-width: 600px; margin: 0 auto; text-align: center; }
+    .demo-form { background: var(--card); border: 1px solid rgba(255,255,255,0.06); border-radius: 24px; padding: 50px 40px; margin-top: 40px; }
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label { display: block; color: var(--gris); font-size: 0.85rem; margin-bottom: 8px; font-weight: 500; }
+    .form-group input, .form-group select { width: 100%; padding: 14px 18px; background: #1e1e2e; border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; color: var(--blanc); font-size: 0.95rem; font-family: 'DM Sans', sans-serif; transition: border-color 0.2s; outline: none; }
+    .form-group input:focus, .form-group select:focus { border-color: var(--violet); }
+    .form-group select option { background: #1e1e2e; }
+
+    /* FOOTER */
+    footer { padding: 40px 60px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; color: var(--gris); font-size: 0.85rem; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { gap: 20px; }
+      .hero { padding: 100px 20px 60px; }
+      .preview-body { grid-template-columns: 1fr; }
+      .chart-area { grid-column: 1; }
+      .stats { grid-template-columns: 1fr; padding: 40px 20px; }
+      .features { padding: 60px 20px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .pricing, .demo { padding: 60px 20px; }
+      footer { flex-direction: column; gap: 10px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Data<span>Coiff</span> Pro</div>
+    <div class="nav-links">
+      <a href="#fonctionnalites">Fonctionnalités</a>
+      <a href="#tarifs">Tarifs</a>
+      <a href="#demo" class="btn-nav">Demander une démo</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div style="position:relative; z-index:1;">
+      <div class="hero-badge">✂️ Conçu pour les salons de coiffure</div>
+      <h1>Pilotez votre salon<br>comme un <em>pro</em></h1>
+      <p>Tableaux de bords de qualité, gestion de stock et suivi des ventes - tout ce dont vous avez besoin, directement depuis votre Excel.</p>
+      <div class="hero-cta">
+        <a href="#demo" class="btn-primary">Demander une démo gratuite →</a>
+        <a href="#fonctionnalites" class="btn-secondary">Voir les fonctionnalités</a>
+      </div>
+      <div class="preview">
+        <div class="preview-window">
+          <div class="preview-bar">
+            <div class="dot dot-r"></div>
+            <div class="dot dot-y"></div>
+            <div class="dot dot-g"></div>
+            <div class="preview-url">flavioconsulting.shinyapps.io/votre-salon</div>
+          </div>
+          <div class="preview-body">
+            <div class="kpi-card green"><div class="kpi-value">2 840 €</div><div class="kpi-label">Chiffre d'affaires</div></div>
+            <div class="kpi-card blue"><div class="kpi-value">94</div><div class="kpi-label">Prestations ce mois</div></div>
+            <div class="kpi-card purple"><div class="kpi-value">30,2 €</div><div class="kpi-label">Panier moyen</div></div>
+            <div class="chart-area">
+              <div class="bar" style="height:40%;animation-delay:0.1s"></div>
+              <div class="bar" style="height:65%;animation-delay:0.2s"></div>
+              <div class="bar" style="height:45%;animation-delay:0.3s"></div>
+              <div class="bar" style="height:80%;animation-delay:0.4s"></div>
+              <div class="bar" style="height:55%;animation-delay:0.5s"></div>
+              <div class="bar" style="height:90%;animation-delay:0.6s"></div>
+              <div class="bar" style="height:70%;animation-delay:0.7s"></div>
+            </div>
+            <div class="chart-side">
+              <div class="chart-side-title">Top services</div>
+              <div class="service-row"><div class="service-bar" style="width:90%"></div><div class="service-label">Coupe femme</div></div>
+              <div class="service-row"><div class="service-bar" style="width:65%"></div><div class="service-label">Couleur</div></div>
+              <div class="service-row"><div class="service-bar" style="width:45%"></div><div class="service-label">Coupe homme</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats fade-in">
+    <div class="stat-item">
+      <div class="stat-number">5<span>min</span></div>
+      <div class="stat-desc">Pour configurer votre tableau de bord</div>
+    </div>
+    <div class="stat-item" style="border-left:1px solid rgba(255,255,255,0.05);border-right:1px solid rgba(255,255,255,0.05);">
+      <div class="stat-number">0<span>€</span></div>
+      <div class="stat-desc">De logiciel supplémentaire à acheter</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">100<span>%</span></div>
+      <div class="stat-desc">Compatible avec votre Excel actuel</div>
+    </div>
+  </section>
+
+  <section class="features fade-in" id="fonctionnalites">
+    <div class="section-label">Fonctionnalités</div>
+    <h2 class="section-title">Tout ce qu'il vous faut, rien de plus.</h2>
+    <div class="features-grid">
+      <div class="feature-card"><span class="feature-icon">📊</span><div class="feature-title">Indicateurs en temps réel</div><div class="feature-desc">CA journalier, panier moyen, nombre de prestations — visualisez votre activité d'un coup d'oeil.</div></div>
+      <div class="feature-card"><span class="feature-icon">📦</span><div class="feature-title">Gestion du stock</div><div class="feature-desc">Alertes automatiques quand un produit passe sous le seuil minimum. Fini les ruptures de stock.</div></div>
+      <div class="feature-card"><span class="feature-icon">✂️</span><div class="feature-title">Suivi des prestations</div><div class="feature-desc">Analysez vos services les plus rentables et les performances de chaque employé.</div></div>
+      <div class="feature-card"><span class="feature-icon">📋</span><div class="feature-title">Compatible Excel</div><div class="feature-desc">Continuez à utiliser votre Excel habituel. Un simple bouton envoie vos données vers le tableau de bord.</div></div>
+      <div class="feature-card"><span class="feature-icon">🔐</span><div class="feature-title">Accès sécurisé</div><div class="feature-desc">Votre tableau de bord est protégé par mot de passe. Accessible depuis n'importe quel appareil.</div></div>
+      <div class="feature-card"><span class="feature-icon">📱</span><div class="feature-title">Accessible partout</div><div class="feature-desc">Consultez vos chiffres depuis votre téléphone, tablette ou ordinateur, où que vous soyez.</div></div>
+    </div>
+  </section>
+
+  <section class="pricing fade-in" id="tarifs">
+    <div class="section-label">Tarifs</div>
+    <h2 class="section-title" style="margin:0 auto;text-align:center;">Simple et transparent.</h2>
+    <div class="price-card">
+      <div class="price-badge">⭐ Offre de lancement</div>
+      <div class="price-amount"><sup>€</sup>29<sub>/mois</sub></div>
+      <p class="price-desc">Moins d'un café par jour pour piloter votre salon comme un pro.</p>
+      <ul class="price-features">
+        <li>Tableau de bord personnalisé</li>
+        <li>Gestion du stock avec alertes</li>
+        <li>Suivi des ventes et prestations</li>
+        <li>Bouton Excel intégré (1 clic)</li>
+        <li>Accès sécurisé par mot de passe</li>
+        <li>Support et mises à jour inclus</li>
+        <li>Installation et configuration offerte</li>
+      </ul>
+      <a href="#demo" class="btn-cta">Demander une démo gratuite →</a>
+    </div>
+  </section>
+
+  <section class="demo fade-in" id="demo">
+    <div class="section-label">Démo gratuite</div>
+    <h2 class="section-title" style="margin:0 auto;text-align:center;">Voyez DataCoiff Pro<br>en action.</h2>
+    <div class="demo-form">
+      <div class="form-group"><label>Votre prénom</label><input type="text" placeholder="Marie"></div>
+      <div class="form-group"><label>Votre email</label><input type="email" placeholder="marie@monsalon.fr"></div>
+      <div class="form-group"><label>Nom de votre salon</label><input type="text" placeholder="Salon Marie"></div>
+      <div class="form-group">
+        <label>Nombre d'employés</label>
+        <select>
+          <option>1 (juste moi)</option>
+          <option>2-3 employés</option>
+          <option>4-6 employés</option>
+          <option>7+ employés</option>
+        </select>
+      </div>
+      <br>
+      <a href="mailto:flavio.dunand71@gmail.com?subject=Demande demo DataCoiff Pro" class="btn-cta">Envoyer ma demande de démo →</a>
+      <p style="color:var(--gris);font-size:0.8rem;margin-top:16px;">Je vous réponds sous 24h pour fixer un créneau. 100% gratuit, sans engagement.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="logo" style="font-size:1rem;">Data<span style="color:var(--or)">Coiff</span> Pro</div>
+    <div>© 2026 DataCoiff Pro — Tous droits réservés</div>
+    <div>Un produit Flavio Consulting</div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
