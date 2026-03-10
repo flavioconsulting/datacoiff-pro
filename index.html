@@ -38,19 +38,7 @@
     }
 
     /* NAV */
-    nav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      padding: 20px 60px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      background: rgba(10,10,15,0.85);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
+    nav { position: fixed; top: 0; width: 100%; padding: 20px 60px; display: flex; justify-content: space-between; align-items: center; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.05); }
     .logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--blanc); letter-spacing: -0.5px; }
     .logo span { color: var(--or); }
     nav a { color: var(--gris); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
@@ -249,8 +237,8 @@
     <h2 class="section-title" style="margin:0 auto;text-align:center;">Simple et transparent.</h2>
     <div class="price-card">
       <div class="price-badge">⭐ Offre de lancement</div>
-      <div class="price-amount"><sup>€</sup>29<sub>/mois</sub></div>
-      <p class="price-desc">Moins d'un café par jour pour piloter votre salon comme un pro.</p>
+      <div class="price-amount"><sup>€</sup>39,99<sub>/mois</sub></div>
+      <p class="price-desc">Pour piloter votre salon comme un pro.</p>
       <ul class="price-features">
         <li>Tableau de bord personnalisé</li>
         <li>Gestion du stock avec alertes</li>
@@ -260,7 +248,11 @@
         <li>Support et mises à jour inclus</li>
         <li>Installation et configuration offerte</li>
       </ul>
-      <a href="#demo" class="btn-cta">Demander une démo gratuite →</a>
+      <a href="https://buy.stripe.com/test_aFa3cu9dqgzNej34yidby00" target="_blank" class="btn-cta">S'abonner maintenant — 39,99€/mois →</a>
+      <p style="color:var(--gris);font-size:0.8rem;margin-top:16px;">Paiement sécurisé par Stripe. Résiliable à tout moment.</p>
+      <div style="margin-top:20px;">
+        <a href="#demo" style="color:var(--violet2);font-size:0.9rem;text-decoration:underline;">Ou demander une démo gratuite d'abord</a>
+      </div>
     </div>
   </section>
 
