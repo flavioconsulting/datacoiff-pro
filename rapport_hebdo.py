@@ -87,7 +87,7 @@ for nom_salon, email_salon, ca, nb in salons:
     msg["To"]      = email_salon
     msg.attach(MIMEText(html, "html"))
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+    with smtplib.SMTP_SSL("smtp.hostinger.com", 465) as smtp:
         smtp.login(EMAIL_FROM, EMAIL_PASS)
         smtp.sendmail(EMAIL_FROM, email_salon, msg.as_string())
     print(f"✅ Rapport envoyé à {nom_salon} ({email_salon})")
