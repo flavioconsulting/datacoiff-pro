@@ -1,0 +1,21 @@
+name: Rapport hebdomadaire DataCoiff
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'  # Tous les lundis à 8h (heure Paris)
+  workflow_dispatch:
+
+jobs:
+  rapport:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install psycopg2-binary
+      - run: python rapport_hebdo.py
+        env:
+          SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
+          EMAIL_EXPEDITEUR:  ${{ secrets.EMAIL_EXPEDITEUR }}
+          EMAIL_MOT_PASSE:   ${{ secrets.EMAIL_MOT_PASSE }}
