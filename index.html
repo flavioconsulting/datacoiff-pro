@@ -254,7 +254,7 @@
         <li>Support et mises à jour inclus</li>
         <li>Installation et configuration offerte</li>
       </ul>
-      <a href="https://buy.stripe.com/4gMfZg2WVgpqbvM0Sifw400" target="_blank" class="btn-cta">S'abonner maintenant — 39,99€/mois →</a>
+      <a href="https://buy.stripe.com/test_aFa3cu9dqgzNej34yidby00" target="_blank" class="btn-cta">S'abonner maintenant — 39,99€/mois →</a>
       <p style="color:var(--gris);font-size:0.8rem;margin-top:16px;">Paiement sécurisé par Stripe. Résiliable à tout moment.</p>
       <div style="margin-top:20px;">
         <a href="#demo" style="color:var(--violet2);font-size:0.9rem;text-decoration:underline;">Ou demander une démo gratuite d'abord</a>
@@ -297,6 +297,33 @@
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    document.querySelector('form').addEventListener('submit', async function(e) {
+      e.preventDefault()
+      const email  = this.querySelector('input[name="email"]').value
+      const prenom = this.querySelector('input[name="prenom"]').value
+      const salon  = this.querySelector('input[name="salon"]').value
+
+      await fetch('https://formspree.io/f/xkoqjqgo', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, prenom, salon })
+      })
+
+      await fetch('https://app.flavioconsulting.fr/api/demo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, prenom })
+      })
+
+      this.innerHTML = `
+        <div style="text-align:center;padding:40px 0;">
+          <div style="font-size:3rem;margin-bottom:16px;">✅</div>
+          <h3 style="color:#fff;margin-bottom:12px;">Demande envoyée !</h3>
+          <p style="color:#6b6b80;">Vérifiez votre boîte email, vous avez reçu vos accès démo.</p>
+        </div>
+      `
+    })
   </script>
 
 </body>
