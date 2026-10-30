@@ -555,7 +555,7 @@ footer a { color: var(--label-2); }
           <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Une seule personne en face : moi, Flavio.</span></li>
         </ul>
       </div>
-      <form class="apparait" action="https://formspree.io/f/xkoqjqgo" method="POST" data-formspree data-ok="Merci ! Je vous réponds sous 24 h pour fixer l’essai.">
+      <form class="apparait" action="https://formspree.io/f/xkoqjqgo" method="POST" data-formspree data-demo data-ok="Merci ! Un email de confirmation vient de partir. Je vous réponds sous 24 h pour fixer l’essai.">
         <input type="hidden" name="_subject" value="Demande d’essai DataCoiff Pro">
         <div class="groupe">
           <label><span>Prénom</span><input type="text" name="prenom" autocomplete="given-name" required placeholder="Requis"></label>
@@ -732,7 +732,13 @@ footer a { color: var(--label-2); }
       if (!f.checkValidity()) { f.reportValidity(); return; }
       if (/VOTRE_ID/.test(f.action)) { retour.className = 'retour err'; retour.textContent = 'Formulaire pas encore relié : remplacez xkoqjqgo dans le fichier.'; return; }
       btn.disabled = true; btn.textContent = 'Envoi…'; retour.className = 'retour'; retour.textContent = '';
-      fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } })
+      var donnees = new FormData(f);
+      // Demande d'essai : l'appli envoie aussi l'accusé de réception au prospect et l'alerte à Flavio
+      if (f.hasAttribute('data-demo')) {
+        fetch('https://app.flavioconsulting.fr/api/demo', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prenom: donnees.get('prenom') || '', email: donnees.get('email') || '', salon: donnees.get('salon') || '' }) }).catch(function () {});
+      }
+      fetch(f.action, { method: 'POST', body: donnees, headers: { Accept: 'application/json' } })
         .then(function (r) { if (!r.ok) throw new Error(); f.reset(); retour.className = 'retour ok'; retour.textContent = f.getAttribute('data-ok'); })
         .catch(function () { retour.className = 'retour err'; retour.textContent = 'L’envoi n’a pas marché. Réessayez, ou écrivez à contact@flavioconsulting.fr.'; })
         .then(function () { btn.disabled = false; btn.textContent = libelle; });
