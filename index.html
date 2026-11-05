@@ -286,6 +286,7 @@ section { padding: clamp(80px, 11vw, 140px) 0; }
 .note-champs { font-size: 0.82rem; color: var(--label-3); margin: 10px 16px 0; }
 .envoi { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
 .retour { font-size: 0.95rem; color: var(--label-2); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .retour.ok { color: var(--green); font-weight: 600; }
 .retour.err { color: var(--red); }
 .promesses { list-style: none; padding: 0; margin: 26px 0 0; }
@@ -355,7 +356,7 @@ footer a { color: var(--label-2); }
       <h1 class="t-hero apparait">Vos clientes réservent.<br>Même quand c’est fermé.</h1>
       <p class="lead apparait">Agenda, réservation en ligne, caisse, fichier clients, chiffres et stock. Tout le salon dans une seule appli.</p>
       <div class="actions apparait">
-        <a class="btn btn-p btn-lg" href="#essai">Demander un essai gratuit</a>
+        <a class="btn btn-p btn-lg" href="#essai">Essayer 14 jours gratuitement</a>
         <a class="btn btn-l" href="#demo">Essayer la réservation ›</a>
       </div>
       <p class="prix-ligne apparait">39,99 € par mois, tout compris. Sans engagement.</p>
@@ -548,14 +549,14 @@ footer a { color: var(--label-2); }
     <div class="wrap form-zone">
       <div class="apparait">
         <h2 class="t-1">Essayez-le avec votre salon.</h2>
-        <p class="lead" style="margin-top:16px">Je crée votre espace, je règle vos prestations et vos horaires, et je vous montre comment tout marche.</p>
+        <p class="lead" style="margin-top:16px">Votre espace est créé tout de suite : vos accès arrivent par email dans la minute. Vous l’essayez avec vos vraies prestations et vos vraies clientes.</p>
         <ul class="promesses">
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><strong>Réponse sous 24 h</strong>, pour fixer un moment.</span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><strong>Gratuit et sans engagement.</strong></span></li>
-          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Une seule personne en face : moi, Flavio.</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><strong>Accès immédiat</strong>, par email.</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><strong>14 jours gratuits</strong>, sans carte bancaire ni engagement.</span></li>
+          <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Une question ? Une seule personne en face : moi, Flavio.</span></li>
         </ul>
       </div>
-      <form class="apparait" action="https://formspree.io/f/xkoqjqgo" method="POST" data-formspree data-demo data-ok="Merci ! Un email de confirmation vient de partir. Je vous réponds sous 24 h pour fixer l’essai.">
+      <form class="apparait" action="https://formspree.io/f/xkoqjqgo" method="POST" data-formspree data-demo data-ok="C’est prêt ! Vos accès viennent de partir par email. Rien reçu d’ici quelques minutes ? Regardez dans les spams." data-ok-attente="Merci ! Je prépare votre espace et je vous envoie vos accès dans la journée.">
         <input type="hidden" name="_subject" value="Demande d’essai DataCoiff Pro">
         <div class="groupe">
           <label><span>Prénom</span><input type="text" name="prenom" autocomplete="given-name" required placeholder="Requis"></label>
@@ -564,7 +565,8 @@ footer a { color: var(--label-2); }
           <label><span>Vous êtes</span><select name="taille" required><option value="1">Seule ou seul au salon</option><option value="2-3">2 ou 3 personnes</option><option value="4-6">4 à 6 personnes</option><option value="7+">7 ou plus</option><option value="domicile">Coiffure à domicile</option></select></label>
           <label><span>Outil actuel</span><input type="text" name="outil_actuel" placeholder="Facultatif"></label>
         </div>
-        <div class="envoi"><button class="btn btn-p btn-lg" type="submit">Demander mon essai</button><span class="retour" role="status"></span></div>
+        <div class="hp" aria-hidden="true"><label>Ne pas remplir <input type="text" name="site_web" tabindex="-1" autocomplete="off"></label></div>
+        <div class="envoi"><button class="btn btn-p btn-lg" type="submit">Créer mon essai gratuit</button><span class="retour" role="status"></span></div>
       </form>
     </div>
   </section>
@@ -733,14 +735,28 @@ footer a { color: var(--label-2); }
       if (/VOTRE_ID/.test(f.action)) { retour.className = 'retour err'; retour.textContent = 'Formulaire pas encore relié : remplacez xkoqjqgo dans le fichier.'; return; }
       btn.disabled = true; btn.textContent = 'Envoi…'; retour.className = 'retour'; retour.textContent = '';
       var donnees = new FormData(f);
-      // Demande d'essai : l'appli envoie aussi l'accusé de réception au prospect et l'alerte à Flavio
-      if (f.hasAttribute('data-demo')) {
-        fetch('https://app.flavioconsulting.fr/api/demo', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prenom: donnees.get('prenom') || '', email: donnees.get('email') || '', salon: donnees.get('salon') || '' }) }).catch(function () {});
+      function reussi(msg) { f.reset(); retour.className = 'retour ok'; retour.textContent = msg || f.getAttribute('data-ok'); }
+      function echec(msg) { retour.className = 'retour err'; retour.textContent = msg || 'L’envoi n’a pas marché. Réessayez, ou écrivez à contact@flavioconsulting.fr.'; }
+      function formspree() {
+        return fetch(f.action, { method: 'POST', body: donnees, headers: { Accept: 'application/json' } })
+          .then(function (r) { if (!r.ok) throw new Error(); reussi(f.getAttribute('data-ok-attente')); });
       }
-      fetch(f.action, { method: 'POST', body: donnees, headers: { Accept: 'application/json' } })
-        .then(function (r) { if (!r.ok) throw new Error(); f.reset(); retour.className = 'retour ok'; retour.textContent = f.getAttribute('data-ok'); })
-        .catch(function () { retour.className = 'retour err'; retour.textContent = 'L’envoi n’a pas marché. Réessayez, ou écrivez à contact@flavioconsulting.fr.'; })
+      var envoi;
+      if (f.hasAttribute('data-demo')) {
+        // Demande d'essai : l'appli crée l'espace et envoie les accès. Si elle ne répond pas, Formspree prend le relais.
+        var corps = {};
+        ['prenom', 'email', 'salon', 'taille', 'outil_actuel', 'site_web'].forEach(function (k) { corps[k] = donnees.get(k) || ''; });
+        envoi = fetch('https://app.flavioconsulting.fr/api/demo', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(corps) })
+          .then(function (r) {
+            if (r.ok) return r.json().catch(function () { return {}; }).then(function (d) { reussi(d.attente ? f.getAttribute('data-ok-attente') : null); });
+            if (r.status === 400 || r.status === 429) return r.json().catch(function () { return {}; }).then(function (d) { echec(d.error); });
+            return formspree();
+          }, formspree);
+      } else {
+        envoi = formspree();
+      }
+      envoi
+        .catch(function () { echec(); })
         .then(function () { btn.disabled = false; btn.textContent = libelle; });
     });
   });
